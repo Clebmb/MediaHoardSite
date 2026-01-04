@@ -27,9 +27,25 @@ body {
     background-color: var(--color-background-dark);
     color: var(--color-text-white);
     font-family: var(--font-body);
-    overflow: hidden;
-    /* Prevent body scroll, use main instead */
-    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: auto;
+    min-height: 100vh;
+}
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* Glassmorphism */
@@ -83,7 +99,6 @@ body {
 /* Mobile Header */
 .mobile-header {
     display: none;
-    /* Desktop hidden */
     height: 64px;
     padding: 0 20px;
     align-items: center;
@@ -94,7 +109,35 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 300;
+}
+
+.mobile-menu-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-white);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.mobile-menu-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .mobile-only {
+        display: flex;
+    }
 }
 
 /* Sidebar */
@@ -207,7 +250,6 @@ nav {
 main {
     flex: 1;
     position: relative;
-    overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
@@ -302,9 +344,15 @@ p.subtitle {
 
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
     margin-top: 40px;
+}
+
+@media (max-width: 480px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .feature-card {
@@ -340,7 +388,8 @@ p.subtitle {
     border: 1px solid rgba(57, 224, 121, 0.3);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(57, 224, 121, 0.2);
     transform: rotateY(-20deg) rotateX(8deg) rotateZ(2deg);
-    transition: transform 0.5s ease;
+    transition: all 0.5s ease;
+    display: block;
 }
 
 /* Desktop/Large Screen Adjustments */
@@ -359,6 +408,8 @@ p.subtitle {
 
     .app-container {
         padding-top: 64px;
+        height: auto;
+        min-height: 100vh;
     }
 
     aside {
@@ -419,12 +470,20 @@ p.subtitle {
     .mockup-container {
         width: 100%;
         max-width: 500px;
-        margin-top: 60px;
+        margin: 40px auto 0;
         perspective: none;
+        display: flex;
+        justify-content: center;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 
     .skewed-mockup {
-        transform: rotateY(-10deg) rotateZ(1deg);
+        transform: none;
+        /* Flat on mobile for better visibility */
+        max-width: 100%;
+        height: auto;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
     }
 
     .features-grid {
