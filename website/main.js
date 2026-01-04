@@ -2,10 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const navItems = document.querySelectorAll('.nav-item');
     const pages = document.querySelectorAll('.page');
     const sidebar = document.querySelector('aside');
+    const menuToggle = document.getElementById('menu-toggle');
+    const closeMenu = document.getElementById('close-menu');
 
-    // Simple navigation logic
+    // Navigation logic
     function navigateTo(pageId) {
-        // Update URL hash without jumping
+        // Update URL hash
         history.pushState(null, null, `#${pageId}`);
 
         // Update Nav UI
@@ -26,9 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Reset scroll position
+        // Reset scroll position in main content
         const main = document.querySelector('main');
         if (main) main.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Close sidebar on mobile after navigation
+        if (window.innerWidth <= 1024) {
+            sidebar.classList.remove('active');
+        }
     }
 
     // Attach click listeners to nav items
@@ -39,7 +46,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Expose navigateTo to window for inline calls
+    // Mobile Menu Toggle logic
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.add('active');
+        });
+    }
+
+    if (closeMenu) {
+        closeMenu.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+    }
+
+    // Expose navigateTo to window
     window.navTo = navigateTo;
 
     // Handle initial hash
@@ -61,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Hover effect for feature cards (subtle scale shift for children)
+    // Feature card hover effects
     const glassCards = document.querySelectorAll('.glass-card');
     glassCards.forEach(card => {
         card.addEventListener('mouseenter', () => {
@@ -79,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Password Modal Logic for Alpha Download
+    // Password Modal Logic
     const alphaBtn = document.getElementById('download-alpha-btn');
     const modal = document.getElementById('password-modal');
     const cancelBtn = document.getElementById('cancel-password');
@@ -87,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('password-input');
     const passwordError = document.getElementById('password-error');
 
-    // Obfuscated key check to prevent source searching
+    // Obfuscated key
     const _0x1a2b = ["TUhBLTAxMjAyNi1USFg="];
     const DOWNLOAD_URL = "https://github.com/Clebmb/MediaHoard_Alpha";
 
@@ -116,11 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 passwordInput.value = '';
                 passwordInput.focus();
 
-                // Shake effect on error
                 const content = modal.querySelector('.modal-content');
                 if (content) {
                     content.style.animation = 'none';
-                    content.offsetHeight; // trigger reflow
+                    content.offsetHeight;
                     content.style.animation = 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both';
                 }
             }
