@@ -59,6 +59,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Close sidebar when clicking outside
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1024 &&
+            sidebar.classList.contains('active') &&
+            !sidebar.contains(e.target) &&
+            !menuToggle.contains(e.target)) {
+            sidebar.classList.remove('active');
+        }
+    });
+
     // Expose navigateTo to window
     window.navTo = navigateTo;
 
@@ -99,62 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Password Modal Logic
+    // Download Logic
     const alphaBtn = document.getElementById('download-alpha-btn');
-    const modal = document.getElementById('password-modal');
-    const cancelBtn = document.getElementById('cancel-password');
-    const submitBtn = document.getElementById('submit-password');
-    const passwordInput = document.getElementById('password-input');
-    const passwordError = document.getElementById('password-error');
-
-    // Obfuscated key
-    const _0x1a2b = ["TUhBLTAxMjAyNi1USFg="];
     const DOWNLOAD_URL = "https://github.com/Clebmb/MediaHoard_Alpha";
 
     if (alphaBtn) {
         alphaBtn.addEventListener('click', () => {
-            modal.classList.add('active');
-            passwordInput.value = '';
-            passwordError.style.display = 'none';
-            setTimeout(() => passwordInput.focus(), 100);
-        });
-    }
-
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-    }
-
-    const verifyAccess = () => {
-        try {
-            if (btoa(passwordInput.value) === _0x1a2b[0]) {
-                window.open(DOWNLOAD_URL, '_blank');
-                modal.classList.remove('active');
-            } else {
-                passwordError.style.display = 'block';
-                passwordInput.value = '';
-                passwordInput.focus();
-
-                const content = modal.querySelector('.modal-content');
-                if (content) {
-                    content.style.animation = 'none';
-                    content.offsetHeight;
-                    content.style.animation = 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both';
-                }
-            }
-        } catch (e) {
-            passwordError.style.display = 'block';
-        }
-    };
-
-    if (submitBtn) {
-        submitBtn.addEventListener('click', verifyAccess);
-    }
-
-    if (passwordInput) {
-        passwordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') verifyAccess();
+            window.open(DOWNLOAD_URL, '_blank');
         });
     }
 });
