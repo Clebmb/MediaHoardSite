@@ -411,40 +411,67 @@ p.subtitle {
 
 /* Responsive Adjustments */
 
-/* Mobile Rewrite v1.2 */
+/* Mobile Rewrite v1.3 - Robust Document Flow */
 @media screen and (max-width: 1024px) {
 
-    /* Layout Reset */
+    /* Layout Reset - Switch to standard scroll */
     .app-container {
-        flex-direction: column;
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
+        display: block;
+        /* Robust against viewport height bugs */
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: visible;
+        /* Let the window scroll */
     }
 
     /* Mobile Header */
     .mobile-header {
         display: flex;
+        position: sticky;
+        /* Modern and smoother than fixed */
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 300;
+        background: rgba(7, 18, 30, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--color-border-color);
     }
 
     /* Sidebar / Drawer */
     aside {
         position: fixed;
-        top: 64px;
-        /* Below header */
+        top: 0;
+        /* Cover full height for better UX */
         left: 0;
         bottom: 0;
-        width: 100%;
+        height: 100dvh;
+        width: 80%;
+        /* Wider on mobile */
         max-width: 300px;
         transform: translateX(-100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 200;
+        z-index: 1000;
+        /* Higher than everything */
+        background: var(--color-sidebar-dark);
         border-right: 1px solid var(--color-border-color);
         box-shadow: 10px 0 50px rgba(0, 0, 0, 0.5);
+        padding-top: 20px;
     }
 
     aside.active {
         transform: translateX(0);
+    }
+
+    /* Adjust Sidebar Header inside drawer */
+    .sidebar-header {
+        display: flex;
+        /* Ensure it's visible in drawer */
+        justify-content: space-between;
     }
 
     .mobile-only {
@@ -453,34 +480,46 @@ p.subtitle {
 
     /* Main Content Area */
     main {
-        padding-top: 64px;
-        /* Offset for fixed header */
         width: 100%;
-        height: 100%;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        height: auto;
+        padding-top: 0;
+        /* Sticky header handles offset naturally */
+        overflow: visible;
+    }
+
+    /* overlay backing implementation (optional but good) */
+    aside.active::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+        pointer-events: none;
     }
 
     /* Pages */
     .page {
-        position: relative;
-        /* Natural flow, but manageable */
-        min-height: auto;
-        padding: 40px 20px 100px;
-        /* Extra padding bottom for scroll */
-        opacity: 0;
+        position: static;
+        /* Stack naturally */
+        width: 100%;
+        padding: 30px 20px 80px;
+        opacity: 1;
+        /* Reset opacity logic for safety */
+        visibility: visible;
         display: none;
-        /* Hide by default unlike desktop absolute stacking */
+        /* Controlled by JS */
         transform: none;
-        transition: opacity 0.3s ease;
+        min-height: 60vh;
     }
 
     .page.active {
-        opacity: 1;
-        visibility: visible;
         display: block;
-        transform: none;
-        animation: fadeIn 0.4s ease;
+        animation: fadeIn 0.4s ease-out;
     }
 
     /* Hero Section */
